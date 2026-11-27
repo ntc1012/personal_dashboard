@@ -108,7 +108,7 @@ assert.match(text, /Chỉnh chuyển động/);
 const welcomeDialog = text.match(/<dialog[^>]*class="media-entrance"[^>]*>[\s\S]*?<\/dialog>/)?.[0];
 assert.ok(welcomeDialog);
 assert.doesNotMatch(welcomeDialog, /role="switch"|Nền hoàng hôn|sunset-train/);
-assert.match(text, /welcome-makoto-14dd9c7ed0d9\.mp4/);
+assert.match(welcomeDialog, /welcome-dive\.gif/);
 for (const [path, size, type, signature] of [
   ['/media/welcome-dive.gif', 9596493, 'image/gif', '474946'],
   ['/media/welcome-dive-still.png', 54932, 'image/png', '89504e47'],

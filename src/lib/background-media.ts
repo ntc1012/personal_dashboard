@@ -1,5 +1,6 @@
 export const backgroundMedia = {
   welcome: '/media/welcome-makoto-14dd9c7ed0d9.mp4',
+  welcomeGif: '/media/welcome-dive.gif',
   welcomeStill: '/media/welcome-dive-still.png',
   disc: '/media/color-your-night-disc.jpg',
   sunset: '/media/sunset-train-eccc4e895c21.png',

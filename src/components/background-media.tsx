@@ -33,7 +33,6 @@ export default function BackgroundMedia() {
   const [sunsetReady, setSunsetReady] = useState(false);
   const [nightStillReady, setNightStillReady] = useState(false);
   const video = useRef<HTMLVideoElement>(null),
-    welcomeVideo = useRef<HTMLVideoElement>(null),
     audio = useRef<HTMLAudioElement>(null),
     gate = useRef<HTMLDialogElement>(null);
   const [entered, setEntered] = useState(false),
@@ -185,21 +184,6 @@ export default function BackgroundMedia() {
     };
   }, [videoReady, nightStillReady, sunsetReady, activeBackground]);
   useEffect(() => {
-    if (entered || welcomeFailed) return;
-    const node = welcomeVideo.current;
-    if (!node) return;
-    const update = () => {
-      if (motion.reduced || !prefs.motion || document.hidden) node.pause();
-      else void node.play().catch(() => node.pause());
-    };
-    update();
-    document.addEventListener('visibilitychange', update);
-    return () => {
-      node.pause();
-      document.removeEventListener('visibilitychange', update);
-    };
-  }, [entered, motion.reduced, prefs.motion, welcomeFailed]);
-  useEffect(() => {
     if (!entered) return;
     function update() {
       const node = video.current;
@@ -318,22 +302,17 @@ export default function BackgroundMedia() {
       >
         {!entered && (
           <div className="welcome-art" aria-hidden="true">
-            {welcomeFailed ? (
-              <img src={backgroundMedia.welcomeStill} alt="" width="682" height="384" />
-            ) : (
-              <video
-                ref={welcomeVideo}
-                src={backgroundMedia.welcome}
-                width="1920"
-                height="1080"
-                muted
-                loop
-                playsInline
-                preload="auto"
-                disablePictureInPicture
-                onError={() => setWelcomeFailed(true)}
-              />
-            )}
+            <img
+              src={
+                motion.reduced || welcomeFailed
+                  ? backgroundMedia.welcomeStill
+                  : backgroundMedia.welcomeGif
+              }
+              alt=""
+              width="682"
+              height="384"
+              onError={() => setWelcomeFailed(true)}
+            />
             <div className="welcome-art-shade" />
           </div>
         )}
