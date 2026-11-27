@@ -24,7 +24,7 @@ jobs:
           supabase db dump --db-url "$SUPABASE_DB_URL" --schema public,private --file backup/schema.sql
           supabase db dump --db-url "$SUPABASE_DB_URL" --schema public,private --data-only --use-copy --file backup/data.sql
           tar -czf jarvis-application-backup.tar.gz backup
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: jarvis-application-backup
           path: jarvis-application-backup.tar.gz
