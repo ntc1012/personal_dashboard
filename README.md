@@ -188,7 +188,7 @@ Tài liệu: https://supabase.com/docs/guides/integrations/vercel-marketplace
 
 Nâng cấp lấy cảm hứng từ mô hình connector/widget của Homarr, bố cục đọc nhanh của Glance và truy cập dịch vụ của Dashy. Không sao chép mã từ bốn repo tham khảo. Giữ Next.js + Supabase + Vercel.
 
-Trên database hiện có, chạy **chỉ migration còn thiếu**, bao gồm `supabase/migrations/202611270009_connected_dashboard.sql`. Cài mới dùng `output/sql/jarvis-install.sql` đã gộp đủ 9 migration. Đưa schema lên trước khi triển khai mã mới.
+Trên database hiện có, chạy **chỉ migration còn thiếu**, bao gồm `supabase/migrations/202611270009_connected_dashboard.sql` và migration thu hồi quyền gọi hàm owner từ `anon`. Cài mới dùng `output/sql/jarvis-install.sql` đã gộp đủ 10 migration. Đưa schema lên trước khi triển khai mã mới.
 
 ### Dữ liệu và giao diện
 

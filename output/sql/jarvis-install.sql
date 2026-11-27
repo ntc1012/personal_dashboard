@@ -716,3 +716,11 @@ do $$ declare n text; begin
  end if;
 end $$;
 commit;
+
+
+-- SOURCE: 20261127073952_revoke_anonymous_owner_probe.sql
+begin;
+-- Hosted Supabase default privileges can grant anon EXECUTE independently of PUBLIC.
+revoke execute on function public.is_app_owner() from public, anon;
+grant execute on function public.is_app_owner() to authenticated;
+commit;
