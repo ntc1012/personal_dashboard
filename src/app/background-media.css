@@ -1,0 +1,200 @@
+body {
+  isolation: isolate;
+}
+.background-media {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 75% 20%, #19527b 0%, #0a203e 45%, #081323 80%);
+}
+.background-media[data-period='morning'] {
+  background: radial-gradient(ellipse at 70% 20%, #81cbd8, #24466d 60%, #102442);
+}
+.background-media[data-period='noon'] {
+  background: radial-gradient(ellipse at 75% 20%, #87cbd2, #284b70 60%, #102442);
+}
+.background-media[data-period='afternoon'] {
+  background: radial-gradient(ellipse at 75% 20%, #6a5e89, #1d3657 60%, #102442);
+}
+.background-video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  object-position: 62% center;
+  opacity: 0;
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.background-video.ready {
+  opacity: 1;
+}
+.background-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, #061126e8 0%, #08152cb3 48%, #07142780 100%),
+    linear-gradient(0deg, #071427b3, transparent 70%);
+}
+body[data-media-ready='true'] .app-shell,
+body[data-media-ready='true'] .setup-page {
+  background: transparent;
+}
+body:has(.app-shell.light) .background-shade {
+  background: linear-gradient(90deg, #eef6fff0, #eef6ffd9 48%, #e8f2ffb3);
+}
+.media-entrance {
+  border: 0;
+  padding: 0;
+  max-width: none;
+  max-height: none;
+  width: 100%;
+  height: 100dvh;
+  margin: 0;
+  color: #f2f8ff;
+  background: radial-gradient(ellipse at 85% 20%, #164568, #08152e 70%);
+  overflow: auto;
+}
+.media-entrance::backdrop {
+  background: #08152e;
+}
+.media-entrance[open] {
+  display: flex;
+  align-items: center;
+}
+.media-entrance-copy {
+  width: min(100%, 75rem);
+  padding: clamp(1.5rem, 7vw, 7rem);
+}
+.media-entrance-copy > span {
+  display: block;
+  color: #a1e3f3;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 0.16em;
+  font-size: 0.875rem;
+}
+.media-entrance h2 {
+  margin: 1.5rem 0 1rem;
+  max-width: 12ch;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 600;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+.media-entrance p {
+  font-size: 1.05rem;
+  margin-block: 1.5rem 2rem;
+}
+.media-entry-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.media-entry-actions .button {
+  min-height: 48px;
+  padding: 0.9rem 1.4rem;
+  border-radius: 8px;
+  border: 1px solid #89deed;
+  color: #091c2d;
+  background: #8ae1ed;
+  font-weight: 600;
+}
+.media-entry-actions .secondary {
+  background: transparent;
+  color: #e0edf8;
+  border-color: #738da3;
+}
+.media-entrance small {
+  display: block;
+  margin-top: 2rem;
+  color: #a1b9cd;
+  font-size: 0.875rem;
+  line-height: 1.8;
+}
+.media-controls {
+  position: fixed;
+  z-index: 45;
+  bottom: 1rem;
+  right: 1.25rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  min-height: 48px;
+  max-width: calc(100vw - 2rem);
+  padding: 0.2rem 0.75rem 0.2rem 0.3rem;
+  color: #eaf5ff;
+  background: #09172eef;
+  border: 1px solid #405c79;
+  border-radius: 999px;
+  box-shadow: 0 8px 30px #0004;
+}
+.media-controls button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: inherit;
+  transition: background 0.12s;
+}
+.media-controls button:hover {
+  background: #22405d;
+}
+.media-volume input {
+  width: 70px;
+  display: block;
+  accent-color: #88dfed;
+}
+.media-control-divider {
+  width: 1px;
+  height: 20px;
+  background: #496179;
+}
+.media-track {
+  font-size: 0.875rem;
+  white-space: nowrap;
+  padding-inline: 0.2rem;
+}
+.media-message {
+  position: fixed;
+  bottom: 5rem;
+  right: 1rem;
+  z-index: 80;
+  width: min(24rem, calc(100vw - 2rem));
+  background: #112942;
+  color: #eff7ff;
+  border: 1px solid #6a889f;
+  border-radius: 12px;
+  padding: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.media-message button {
+  float: right;
+  color: inherit;
+  margin-left: 1rem;
+  font-size: 1.4rem;
+}
+@media (max-width: 600px) {
+  .media-track {
+    display: none;
+  }
+  .media-controls {
+    right: 0.75rem;
+    bottom: 0.75rem;
+  }
+  .background-video {
+    object-position: 65% center;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .background-video,
+  .media-controls button {
+    transition: none;
+  }
+}

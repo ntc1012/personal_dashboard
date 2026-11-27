@@ -16,10 +16,17 @@ export function Greeting({
   tasks: number;
 }) {
   const [shown, setShown] = useState(false);
+  const [entered, setEntered] = useState(false);
   const activeKey = useRef('');
   const reduced = useReducedMotion();
   useEffect(() => {
-    if (!enabled) return;
+    const update = () => setEntered(document.body.dataset.mediaEntered === 'true');
+    update();
+    window.addEventListener('jarvis:media-entered', update);
+    return () => window.removeEventListener('jarvis:media-entered', update);
+  }, []);
+  useEffect(() => {
+    if (!enabled || !entered) return;
     const key = `jarvis-greet:${day}:${period}`;
     try {
       if (localStorage.getItem('jarvis-greet-last') === key && activeKey.current !== key) return;
@@ -36,7 +43,7 @@ export function Greeting({
       clearTimeout(timer);
       window.removeEventListener('keydown', close);
     };
-  }, [period, day, enabled]);
+  }, [period, day, enabled, entered]);
   const labels: Record<string, string> = {
     morning: 'CHÀO BUỔI SÁNG',
     noon: 'MỘT CHÚT NGHỈ TRƯA',

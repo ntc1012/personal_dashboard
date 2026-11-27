@@ -10,6 +10,8 @@ import '@fontsource/barlow-condensed/vietnamese-600.css';
 import '@fontsource/jetbrains-mono/latin-400.css';
 import './modules.css';
 import PwaSupport from '@/components/pwa-support';
+import BackgroundMedia from '@/components/background-media';
+import './background-media.css';
 export const maxDuration = 60;
 export const metadata: Metadata = {
   title: 'J.A.R.V.I.S. — Personal dashboard',
@@ -23,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="vi">
       <body>
+        <BackgroundMedia />
         {children}
         <PwaSupport />
       </body>

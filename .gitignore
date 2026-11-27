@@ -2,6 +2,11 @@ node_modules/
 .next/
 .vercel/
 supabase/.temp/
+*.mp4
+*.webm
+*.mp3
+!/public/media/color-your-night-55e3ce1e6324.mp4
+!/public/media/color-your-night-3461b3e453d8.mp3
 .env*
 !.env.example
 tmp/

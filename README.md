@@ -228,3 +228,17 @@ Trình duyệt nhận tín hiệu thay đổi có RLS theo tài khoản rồi t�
 Nguồn chưa đồng bộ thành công trong 30 phút được đánh dấu dữ liệu cũ; tạm dừng luôn được ghi rõ. Khi provider lỗi, giữ dữ liệu lần cuối. Hoạt động webhook giữ 30 ngày. Dấu chống delivery trùng giữ lâu dài; không lưu raw payload trong dấu này.
 
 Các connector trên đã có mã nguồn và kiểm thử mock/database cục bộ. Chưa xác minh webhook, token, scheduler hoặc Realtime trên tài khoản cloud thật. Đồng bộ Anki/thiết bị tập luyện/NAS và thu thập hóa đơn AI ngoài ứng dụng cần connector riêng theo dịch vụ thực tế; không tự bật quyền hoặc giả lập dữ liệu cho các nguồn này.
+
+## Nhạc và video nền cố định
+
+Theo lựa chọn mới của người dùng, hai tệp Color Your Night được đưa trực tiếp vào `public/media/` và phát trên mọi thiết bị. Đây là thay đổi so với phương án IndexedDB riêng từng thiết bị trong văn bản v1.1. Không có trình chọn file, không upload media vào Supabase và không thay đổi quyền chatbot.
+
+- Video: `color-your-night-55e3ce1e6324.mp4`, 44.630.474 byte. Video luôn muted và phát lặp; nhạc dùng tệp MP3 riêng.
+- Nhạc: `color-your-night-3461b3e453d8.mp3`, 5.534.876 byte. Phát lặp sau thao tác **Nhấn để vào**, tăng âm lượng trong 1,5 giây đến mức đã chọn; mặc định 15%, điều khiển tối đa 50%.
+- Có lựa chọn vào không nhạc, nút nhạc, thanh âm lượng và nút nền động ở góc phải dưới. Phím M/B chỉ hoạt động ngoài ô nhập và hộp thoại. Lựa chọn lưu localStorage có xử lý lỗi.
+- Video chưa tải trước khi vào trang; audio `preload="none"`. Mặc định tắt nền động khi trình duyệt báo giảm chuyển động hoặc tiết kiệm dữ liệu. Khi tab ẩn, tạm dừng hình; MP3 riêng tiếp tục phát nếu trình duyệt cho phép.
+- File có tên chứa hash, phục vụ dưới `/media/` với cache public immutable một năm và hỗ trợ HTTP Range. Route media bỏ qua proxy xác thực; trang/API riêng tư vẫn no-store. Không thêm media vào cache của service worker.
+- Nếu file lỗi, dùng nền tĩnh và báo lỗi; audio bị chặn thì hiện nút để người dùng thử lại. Một số trình duyệt/thiết bị tự quản lý âm lượng hoặc tạm dừng audio khi chạy nền.
+- `.gitignore` chặn các MP4/WebM/MP3 khác và chỉ cho phép đúng hai tệp người dùng chọn. Muốn thay nguồn phải thay file, cập nhật đường dẫn hash và ngoại lệ tương ứng.
+
+Đã kiểm tra build, kiểu TypeScript và HTTP của trang/tệp media. Chưa kiểm thử nghe/nhìn tương tác trên Chrome, Firefox hoặc Safari iOS trong môi trường hiện tại.

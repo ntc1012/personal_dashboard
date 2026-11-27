@@ -80,3 +80,21 @@ assert.ok(definitions.definitions.some((s) => s.includes('hello')));
 assert.equal((await fetch(base + '/sw.js')).status, 200);
 assert.equal((await fetch(base + '/offline.html')).status, 200);
 console.log('All module routes, protected APIs, Chinese dictionary and offline shell passed.');
+
+assert.match(text, /Nhấn để vào/);
+for (const [path, size, signature] of [
+  ['/media/color-your-night-55e3ce1e6324.mp4', 44630474, 'ftyp'],
+  ['/media/color-your-night-3461b3e453d8.mp3', 5534876, 'ID3'],
+]) {
+  const result = await fetch(base + path, { headers: { Range: 'bytes=0-31' } });
+  assert.equal(result.status, 206, path);
+  assert.equal(result.headers.get('content-range'), `bytes 0-31/${size}`);
+  assert.match(result.headers.get('cache-control'), /public.*immutable/);
+  assert.equal(result.headers.get('set-cookie'), null);
+  const bytes = Buffer.from(await result.arrayBuffer());
+  assert.equal(bytes.length, 32);
+  assert.ok(bytes.toString('latin1').includes(signature), path);
+}
+console.log(
+  'Fixed background media passed: entry screen, partial downloads, file signatures and cache.',
+);
