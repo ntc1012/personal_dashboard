@@ -7,6 +7,7 @@ supabase/.temp/
 *.mp3
 !/public/media/color-your-night-55e3ce1e6324.mp4
 !/public/media/color-your-night-3461b3e453d8.mp3
+!/public/media/welcome-makoto-14dd9c7ed0d9.mp4
 .env*
 !.env.example
 tmp/

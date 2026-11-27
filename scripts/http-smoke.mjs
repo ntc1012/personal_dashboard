@@ -102,12 +102,13 @@ assert.match(text, /Chỉnh chuyển động/);
 const welcomeDialog = text.match(/<dialog[^>]*class="media-entrance"[^>]*>[\s\S]*?<\/dialog>/)?.[0];
 assert.ok(welcomeDialog);
 assert.doesNotMatch(welcomeDialog, /role="switch"|Nền hoàng hôn|sunset-train/);
-assert.match(text, /welcome-dive-still\.png/);
+assert.match(text, /welcome-makoto-14dd9c7ed0d9\.mp4/);
 for (const [path, size, type, signature] of [
   ['/media/welcome-dive.gif', 9596493, 'image/gif', '474946'],
   ['/media/welcome-dive-still.png', 54932, 'image/png', '89504e47'],
   ['/media/color-your-night-disc.jpg', 61889, 'image/jpeg', 'ffd8'],
-  ['/media/sunset-train-ba0d037961b1.jpg', 108885, 'image/jpeg', 'ffd8'],
+  ['/media/sunset-train-eccc4e895c21.png', 2812904, 'image/png', '89504e47'],
+  ['/media/welcome-makoto-14dd9c7ed0d9.mp4', 1606267, 'video/mp4', '000000'],
 ]) {
   const response = await fetch(base + path, { headers: { Range: 'bytes=0-31' } });
   assert.equal(response.status, 206);
@@ -115,5 +116,6 @@ for (const [path, size, type, signature] of [
   assert.match(response.headers.get('content-type'), new RegExp(type));
   const bytes = Buffer.from(await response.arrayBuffer());
   assert.ok(bytes.toString('hex').startsWith(signature));
+  if (type === 'video/mp4') assert.equal(bytes.toString('ascii', 4, 8), 'ftyp');
 }
 console.log('Welcome animation assets and spinning-disc image passed.');

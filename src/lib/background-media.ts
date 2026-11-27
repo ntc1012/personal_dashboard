@@ -1,8 +1,8 @@
 export const backgroundMedia = {
-  welcome: '/media/welcome-dive.gif',
+  welcome: '/media/welcome-makoto-14dd9c7ed0d9.mp4',
   welcomeStill: '/media/welcome-dive-still.png',
   disc: '/media/color-your-night-disc.jpg',
-  sunset: '/media/sunset-train-ba0d037961b1.jpg',
+  sunset: '/media/sunset-train-eccc4e895c21.png',
   video: '/media/color-your-night-55e3ce1e6324.mp4',
   audio: '/media/color-your-night-3461b3e453d8.mp3',
   title: 'Color Your Night',

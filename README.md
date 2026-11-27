@@ -245,7 +245,7 @@ Theo lựa chọn mới của người dùng, hai tệp Color Your Night đượ
 
 ## Màn chào và bảng chuyển động từ prototype
 
-GIF người dùng cung cấp được hiển thị ở màn chào đầu tiên, với lớp phủ để đọc chữ. Khi bật giảm chuyển động hoặc đã tắt nền động, dùng PNG trích nguyên khung hình đầu tiên thay GIF. Ảnh GIF được gỡ khỏi cây giao diện sau khi vào dashboard. Ảnh đĩa nằm sát tên bài hát, cắt tròn và xoay liên tục chỉ khi audio phát thực tế; tạm dừng/đệm/lỗi sẽ dừng xoay ở góc hiện tại. Chế độ giảm chuyển động cũng tắt xoay đĩa.
+Màn chào dùng video Full HD `welcome-makoto-14dd9c7ed0d9.mp4` do người dùng cung cấp, thay cho GIF 682×384 cũ. Video 1920×1080, 1.606.267 byte, luôn tắt tiếng; phát lặp khi được phép và dừng ở khung hình hiện tại khi giảm chuyển động, tắt nền động hoặc tab ẩn. Nếu video lỗi, dùng PNG dự phòng từ GIF cũ. Video màn chào được gỡ khỏi cây giao diện sau khi vào trong. Ảnh đĩa nằm sát tên bài hát, cắt tròn và xoay liên tục chỉ khi audio phát thực tế; tạm dừng/đệm/lỗi sẽ dừng xoay ở góc hiện tại. Chế độ giảm chuyển động cũng tắt xoay đĩa.
 
 Nút **Chỉnh chuyển động** có tại màn chào và thanh nhạc; phím **T** mở bảng khi không nhập liệu hoặc mở hộp thoại khác. Bảng chỉnh riêng trên trình duyệt, có xem thử 4 hiệu ứng, sao chép JSON và đặt lại. Thông số nằm tại `src/lib/theme/motion.ts`: hover 120 ms, tab 170 ms, vào module 450 ms, mở dashboard 500 ms, quay lại 300 ms. Slider dùng các khoảng từ prototype; dữ liệu lưu được kiểm tra và giới hạn trước khi dùng.
 
@@ -253,7 +253,7 @@ Hiệu ứng áp dụng vào menu chính, chuyển module, quay về Tổng quan
 
 ## Chuyển nền Đêm / Hoàng hôn
 
-Nút switch **Nền hoàng hôn** chỉ xuất hiện tại thanh nhạc sau khi vào trong, bắt đầu từ màn đăng nhập và dashboard. Màn chào bên ngoài luôn giữ GIF xanh và không có nút đổi nền. Nền Đêm bên trong dùng video đã chọn; Hoàng hôn dùng ảnh `sunset-train-ba0d037961b1.jpg` do người dùng cung cấp. Lựa chọn lưu trong cấu hình media trên trình duyệt, tương thích dữ liệu cũ mặc định Đêm; lựa chọn này chỉ được áp dụng sau khi qua màn chào.
+Nút switch **Nền hoàng hôn** chỉ xuất hiện tại thanh nhạc sau khi vào trong, bắt đầu từ màn đăng nhập và dashboard. Màn chào bên ngoài giữ hoạt ảnh xanh riêng và không có nút đổi nền. Nền Đêm bên trong dùng video đã chọn; Hoàng hôn dùng ảnh PNG `sunset-train-eccc4e895c21.png` 2560×1440, 2.812.904 byte, từ tệp `upscale_2k.png` người dùng cung cấp, thay cho JPEG 736×414 cũ. Lựa chọn lưu trong cấu hình media trên trình duyệt, tương thích dữ liệu cũ mặc định Đêm; lựa chọn này chỉ được áp dụng sau khi qua màn chào. Tên tệp mới chứa hash để tránh cache bản ảnh cũ.
 
 Chuyển sang Hoàng hôn bắt buộc đổi bảng màu: chữ kem, chữ phụ màu đào, nút cam và bảng/sidebar nâu ấm, kể cả khi tài khoản đang chọn giao diện sáng. Đăng nhập, hero, thanh nhạc và bảng chỉnh chuyển động đều dùng cùng bảng màu; màn chào đầu tiên giữ bảng màu xanh riêng. Khi quay về Đêm, các lựa chọn sáng/tối/tự động của tài khoản có hiệu lực lại.
 
