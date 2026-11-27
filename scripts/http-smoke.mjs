@@ -99,11 +99,13 @@ console.log(
   'Fixed background media passed: entry screen, partial downloads, file signatures and cache.',
 );
 assert.match(text, /Chỉnh chuyển động/);
+assert.match(text, /Nền hoàng hôn/);
 assert.match(text, /welcome-dive-still\.png/);
 for (const [path, size, type, signature] of [
   ['/media/welcome-dive.gif', 9596493, 'image/gif', '474946'],
   ['/media/welcome-dive-still.png', 54932, 'image/png', '89504e47'],
   ['/media/color-your-night-disc.jpg', 61889, 'image/jpeg', 'ffd8'],
+  ['/media/sunset-train-ba0d037961b1.jpg', 108885, 'image/jpeg', 'ffd8'],
 ]) {
   const response = await fetch(base + path, { headers: { Range: 'bytes=0-31' } });
   assert.equal(response.status, 206);

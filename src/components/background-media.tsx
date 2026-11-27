@@ -1,6 +1,15 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { Film, Pause, Play, Volume2, VolumeX, SlidersHorizontal } from 'lucide-react';
+import {
+  Film,
+  Pause,
+  Play,
+  Volume2,
+  VolumeX,
+  SlidersHorizontal,
+  Sunset,
+  MoonStar,
+} from 'lucide-react';
 import {
   backgroundMedia,
   backgroundPeriod,
@@ -21,6 +30,7 @@ const greetings = {
 export default function BackgroundMedia() {
   const motion = useDashboardMotion();
   const [welcomeFailed, setWelcomeFailed] = useState(false);
+  const [sunsetReady, setSunsetReady] = useState(false);
   const video = useRef<HTMLVideoElement>(null),
     audio = useRef<HTMLAudioElement>(null),
     gate = useRef<HTMLDialogElement>(null);
@@ -115,7 +125,14 @@ export default function BackgroundMedia() {
     }
   }
   function toggleMotion() {
+    if (prefsRef.current.background === 'sunset') return;
     save({ ...prefsRef.current, motion: !prefsRef.current.motion });
+  }
+  function switchBackground() {
+    save({
+      ...prefsRef.current,
+      background: prefsRef.current.background === 'night' ? 'sunset' : 'night',
+    });
   }
   useEffect(() => {
     mounted.current = true;
@@ -155,17 +172,22 @@ export default function BackgroundMedia() {
     };
   }, []);
   useEffect(() => {
-    document.body.dataset.mediaReady = String(videoReady);
+    document.body.dataset.background = prefs.background;
+    document.body.dataset.mediaReady = String(
+      prefs.background === 'sunset' ? sunsetReady : videoReady,
+    );
     return () => {
       delete document.body.dataset.mediaReady;
+      delete document.body.dataset.background;
     };
-  }, [videoReady]);
+  }, [videoReady, sunsetReady, prefs.background]);
   useEffect(() => {
     if (!entered) return;
     function update() {
       const node = video.current;
       if (!node) return;
-      if (!prefsRef.current.motion || document.hidden) node.pause();
+      if (prefsRef.current.background !== 'night' || !prefsRef.current.motion || document.hidden)
+        node.pause();
       else
         void node.play().catch(() => {
           if (mounted.current) setMessage('Nền đang tạm dừng. Có thể bật lại bằng nút nền động.');
@@ -174,7 +196,7 @@ export default function BackgroundMedia() {
     update();
     document.addEventListener('visibilitychange', update);
     return () => document.removeEventListener('visibilitychange', update);
-  }, [entered, prefs.motion]);
+  }, [entered, prefs.motion, prefs.background]);
   useEffect(() => {
     if (!entered) return;
     function key(event: KeyboardEvent) {
@@ -202,11 +224,34 @@ export default function BackgroundMedia() {
   }, [entered]);
   return (
     <>
-      <div className="background-media" data-period={period} aria-hidden="true">
+      <div
+        className="background-media"
+        data-period={period}
+        data-background={prefs.background}
+        aria-hidden="true"
+      >
+        {entered && prefs.background === 'sunset' && (
+          <img
+            className={sunsetReady ? 'background-sunset ready' : 'background-sunset'}
+            src={backgroundMedia.sunset}
+            alt=""
+            width="736"
+            height="414"
+            onLoad={() => setSunsetReady(true)}
+            onError={() => {
+              setSunsetReady(false);
+              setMessage('Không tải được ảnh hoàng hôn; đang dùng nền màu dự phòng.');
+            }}
+          />
+        )}
         <video
           ref={video}
           className={videoReady ? 'background-video ready' : 'background-video'}
-          src={entered && (prefs.motion || videoReady) ? backgroundMedia.video : undefined}
+          src={
+            entered && prefs.background === 'night' && (prefs.motion || videoReady)
+              ? backgroundMedia.video
+              : undefined
+          }
           muted
           loop
           playsInline
@@ -246,9 +291,11 @@ export default function BackgroundMedia() {
           <div className="welcome-art" aria-hidden="true">
             <img
               src={
-                motion.reduced || !prefs.motion || welcomeFailed
-                  ? backgroundMedia.welcomeStill
-                  : backgroundMedia.welcome
+                prefs.background === 'sunset'
+                  ? backgroundMedia.sunset
+                  : motion.reduced || !prefs.motion || welcomeFailed
+                    ? backgroundMedia.welcomeStill
+                    : backgroundMedia.welcome
               }
               alt=""
               width="682"
@@ -279,6 +326,17 @@ export default function BackgroundMedia() {
             <button type="button" className="button secondary" onClick={motion.openPanel}>
               <SlidersHorizontal size={16} />
               Chỉnh chuyển động
+            </button>
+            <button
+              type="button"
+              className="button secondary background-switch"
+              role="switch"
+              aria-checked={prefs.background === 'sunset'}
+              aria-label="Nền hoàng hôn"
+              onClick={switchBackground}
+            >
+              {prefs.background === 'sunset' ? <Sunset size={18} /> : <MoonStar size={18} />}
+              Nền: {prefs.background === 'sunset' ? 'Hoàng hôn' : 'Đêm'}
             </button>
           </div>
           <small>
@@ -326,11 +384,28 @@ export default function BackgroundMedia() {
           <button
             type="button"
             onClick={toggleMotion}
-            aria-pressed={prefs.motion}
-            aria-label={prefs.motion ? 'Tạm dừng nền động (B)' : 'Bật nền động (B)'}
-            title={prefs.motion ? 'Tạm dừng nền · B' : 'Bật nền · B'}
+            disabled={prefs.background === 'sunset'}
+            aria-pressed={prefs.background === 'night' && prefs.motion}
+            aria-label={
+              prefs.background === 'sunset'
+                ? 'Nền hoàng hôn là ảnh tĩnh'
+                : prefs.motion
+                  ? 'Tạm dừng nền động (B)'
+                  : 'Bật nền động (B)'
+            }
+            title={
+              prefs.background === 'sunset'
+                ? 'Nền hoàng hôn là ảnh tĩnh'
+                : prefs.motion
+                  ? 'Tạm dừng nền · B'
+                  : 'Bật nền · B'
+            }
           >
-            {prefs.motion ? <Pause size={17} /> : <Film size={17} />}
+            {prefs.background === 'night' && prefs.motion ? (
+              <Pause size={17} />
+            ) : (
+              <Film size={17} />
+            )}
           </button>
           <div
             className="media-now-playing"
@@ -358,6 +433,18 @@ export default function BackgroundMedia() {
             title="Chỉnh chuyển động · T"
           >
             <SlidersHorizontal size={17} />
+          </button>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={prefs.background === 'sunset'}
+            aria-label="Nền hoàng hôn"
+            title={
+              prefs.background === 'sunset' ? 'Chuyển sang nền đêm' : 'Chuyển sang nền hoàng hôn'
+            }
+            onClick={switchBackground}
+          >
+            {prefs.background === 'sunset' ? <Sunset size={18} /> : <MoonStar size={18} />}
           </button>
         </div>
       )}

@@ -250,3 +250,11 @@ GIF người dùng cung cấp được hiển thị ở màn chào đầu tiên,
 Nút **Chỉnh chuyển động** có tại màn chào và thanh nhạc; phím **T** mở bảng khi không nhập liệu hoặc mở hộp thoại khác. Bảng chỉnh riêng trên trình duyệt, có xem thử 4 hiệu ứng, sao chép JSON và đặt lại. Thông số nằm tại `src/lib/theme/motion.ts`: hover 120 ms, tab 170 ms, vào module 450 ms, mở dashboard 500 ms, quay lại 300 ms. Slider dùng các khoảng từ prototype; dữ liệu lưu được kiểm tra và giới hạn trước khi dùng.
 
 Hiệu ứng áp dụng vào menu chính, chuyển module, quay về Tổng quan và bộ lọc task; các tab khác giữ hiệu ứng sẵn có. Giảm chuyển động loại bỏ iris, quét và xoay. Thay đổi thiết lập chuyển động không sửa dữ liệu dự án hoặc quyền chatbot. File HTML prototype chỉ dùng tham khảo tương tác, không nhúng script hay chatbot dữ liệu mẫu vào ứng dụng.
+
+## Chuyển nền Đêm / Hoàng hôn
+
+Nút switch **Nền hoàng hôn** xuất hiện tại màn chào và thanh nhạc. Nền Đêm dùng video đã chọn; Hoàng hôn dùng ảnh `sunset-train-ba0d037961b1.jpg` do người dùng cung cấp. Lựa chọn lưu trong cấu hình media trên trình duyệt, tương thích dữ liệu cũ mặc định Đêm.
+
+Chuyển sang Hoàng hôn bắt buộc đổi bảng màu: chữ kem, chữ phụ màu đào, nút cam và bảng/sidebar nâu ấm, kể cả khi tài khoản đang chọn giao diện sáng. Màn chào, đăng nhập, hero, thanh nhạc và bảng chỉnh chuyển động đều dùng cùng bảng màu. Khi quay về Đêm, các lựa chọn sáng/tối/tự động của tài khoản có hiệu lực lại.
+
+Ảnh hoàng hôn là nền tĩnh nên nút nền động được vô hiệu hóa; video đêm được dừng và bỏ nguồn khi không dùng. MP3 và trạng thái đĩa xoay giữ nguyên khi chuyển nền. Ảnh chỉ tải khi được chọn; có nền màu dự phòng nếu tải lỗi.

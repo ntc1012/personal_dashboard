@@ -2,11 +2,17 @@ export const backgroundMedia = {
   welcome: '/media/welcome-dive.gif',
   welcomeStill: '/media/welcome-dive-still.png',
   disc: '/media/color-your-night-disc.jpg',
+  sunset: '/media/sunset-train-ba0d037961b1.jpg',
   video: '/media/color-your-night-55e3ce1e6324.mp4',
   audio: '/media/color-your-night-3461b3e453d8.mp3',
   title: 'Color Your Night',
 } as const;
-export type MediaPreferences = { music: boolean; motion: boolean; volume: number };
+export type MediaPreferences = {
+  music: boolean;
+  motion: boolean;
+  volume: number;
+  background: 'night' | 'sunset';
+};
 export const mediaPreferencesKey = 'jarvis-background-media-v1';
 export function mediaPreferences(
   value: unknown,
@@ -15,6 +21,7 @@ export function mediaPreferences(
 ): MediaPreferences {
   const p = value && typeof value === 'object' ? (value as Partial<MediaPreferences>) : {};
   return {
+    background: p.background === 'sunset' ? 'sunset' : 'night',
     music: typeof p.music === 'boolean' ? p.music : true,
     motion: typeof p.motion === 'boolean' ? p.motion : !reduceMotion && !saveData,
     volume:
