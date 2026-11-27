@@ -45,33 +45,9 @@ body[data-background='sunset'] .background-shade {
     linear-gradient(90deg, #27141de8, #341c23b3 48%, #371e2b59),
     linear-gradient(0deg, #26131fb3, transparent 70%);
 }
-body[data-background='sunset'] .welcome-art-shade {
-  background:
-    linear-gradient(90deg, #29131fee, #44202ab3 45%, #57272433),
-    linear-gradient(0deg, #29131fcc, transparent 65%);
-}
-body[data-background='sunset'] .media-entrance {
-  color: var(--text);
-  background: radial-gradient(ellipse at 80% 20%, #915132, #29171f 70%);
-}
-body[data-background='sunset'] .media-entrance-copy > span,
 body[data-background='sunset'] .hero-kicker svg,
 body[data-background='sunset'] .hero-copy h2 > span {
   color: var(--accent);
-}
-body[data-background='sunset'] .media-entrance small,
-body[data-background='sunset'] .media-entrance p {
-  color: var(--muted);
-}
-body[data-background='sunset'] .media-entry-actions .primary {
-  background: var(--accent);
-  color: var(--accent-ink);
-  border-color: var(--accent);
-}
-body[data-background='sunset'] .media-entry-actions .secondary {
-  color: var(--text);
-  border-color: var(--line);
-  background: #301c2499;
 }
 body[data-background='sunset'] .media-controls,
 body[data-background='sunset'] .media-message {

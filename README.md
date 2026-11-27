@@ -253,8 +253,8 @@ Hiệu ứng áp dụng vào menu chính, chuyển module, quay về Tổng quan
 
 ## Chuyển nền Đêm / Hoàng hôn
 
-Nút switch **Nền hoàng hôn** xuất hiện tại màn chào và thanh nhạc. Nền Đêm dùng video đã chọn; Hoàng hôn dùng ảnh `sunset-train-ba0d037961b1.jpg` do người dùng cung cấp. Lựa chọn lưu trong cấu hình media trên trình duyệt, tương thích dữ liệu cũ mặc định Đêm.
+Nút switch **Nền hoàng hôn** chỉ xuất hiện tại thanh nhạc sau khi vào trong, bắt đầu từ màn đăng nhập và dashboard. Màn chào bên ngoài luôn giữ GIF xanh và không có nút đổi nền. Nền Đêm bên trong dùng video đã chọn; Hoàng hôn dùng ảnh `sunset-train-ba0d037961b1.jpg` do người dùng cung cấp. Lựa chọn lưu trong cấu hình media trên trình duyệt, tương thích dữ liệu cũ mặc định Đêm; lựa chọn này chỉ được áp dụng sau khi qua màn chào.
 
-Chuyển sang Hoàng hôn bắt buộc đổi bảng màu: chữ kem, chữ phụ màu đào, nút cam và bảng/sidebar nâu ấm, kể cả khi tài khoản đang chọn giao diện sáng. Màn chào, đăng nhập, hero, thanh nhạc và bảng chỉnh chuyển động đều dùng cùng bảng màu. Khi quay về Đêm, các lựa chọn sáng/tối/tự động của tài khoản có hiệu lực lại.
+Chuyển sang Hoàng hôn bắt buộc đổi bảng màu: chữ kem, chữ phụ màu đào, nút cam và bảng/sidebar nâu ấm, kể cả khi tài khoản đang chọn giao diện sáng. Đăng nhập, hero, thanh nhạc và bảng chỉnh chuyển động đều dùng cùng bảng màu; màn chào đầu tiên giữ bảng màu xanh riêng. Khi quay về Đêm, các lựa chọn sáng/tối/tự động của tài khoản có hiệu lực lại.
 
 Ảnh hoàng hôn là nền tĩnh nên nút nền động được vô hiệu hóa; video đêm được dừng và bỏ nguồn khi không dùng. MP3 và trạng thái đĩa xoay giữ nguyên khi chuyển nền. Ảnh chỉ tải khi được chọn; có nền màu dự phòng nếu tải lỗi.

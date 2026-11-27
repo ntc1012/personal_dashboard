@@ -39,6 +39,7 @@ export default function BackgroundMedia() {
     [videoReady, setVideoReady] = useState(false);
   const [period, setPeriod] = useState<keyof typeof greetings>('night');
   const [prefs, setPrefs] = useState<MediaPreferences>(() => mediaPreferences(null));
+  const activeBackground = entered ? prefs.background : 'night';
   const prefsRef = useRef(prefs),
     fade = useRef(0),
     playRequest = useRef(0),
@@ -172,7 +173,7 @@ export default function BackgroundMedia() {
     };
   }, []);
   useEffect(() => {
-    document.body.dataset.background = prefs.background;
+    document.body.dataset.background = activeBackground;
     document.body.dataset.mediaReady = String(
       prefs.background === 'sunset' ? sunsetReady : videoReady,
     );
@@ -180,7 +181,7 @@ export default function BackgroundMedia() {
       delete document.body.dataset.mediaReady;
       delete document.body.dataset.background;
     };
-  }, [videoReady, sunsetReady, prefs.background]);
+  }, [videoReady, sunsetReady, activeBackground]);
   useEffect(() => {
     if (!entered) return;
     function update() {
@@ -227,7 +228,7 @@ export default function BackgroundMedia() {
       <div
         className="background-media"
         data-period={period}
-        data-background={prefs.background}
+        data-background={activeBackground}
         aria-hidden="true"
       >
         {entered && prefs.background === 'sunset' && (
@@ -291,11 +292,9 @@ export default function BackgroundMedia() {
           <div className="welcome-art" aria-hidden="true">
             <img
               src={
-                prefs.background === 'sunset'
-                  ? backgroundMedia.sunset
-                  : motion.reduced || !prefs.motion || welcomeFailed
-                    ? backgroundMedia.welcomeStill
-                    : backgroundMedia.welcome
+                motion.reduced || !prefs.motion || welcomeFailed
+                  ? backgroundMedia.welcomeStill
+                  : backgroundMedia.welcome
               }
               alt=""
               width="682"
@@ -326,17 +325,6 @@ export default function BackgroundMedia() {
             <button type="button" className="button secondary" onClick={motion.openPanel}>
               <SlidersHorizontal size={16} />
               Chỉnh chuyển động
-            </button>
-            <button
-              type="button"
-              className="button secondary background-switch"
-              role="switch"
-              aria-checked={prefs.background === 'sunset'}
-              aria-label="Nền hoàng hôn"
-              onClick={switchBackground}
-            >
-              {prefs.background === 'sunset' ? <Sunset size={18} /> : <MoonStar size={18} />}
-              Nền: {prefs.background === 'sunset' ? 'Hoàng hôn' : 'Đêm'}
             </button>
           </div>
           <small>

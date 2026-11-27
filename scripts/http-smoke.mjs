@@ -99,7 +99,9 @@ console.log(
   'Fixed background media passed: entry screen, partial downloads, file signatures and cache.',
 );
 assert.match(text, /Chỉnh chuyển động/);
-assert.match(text, /Nền hoàng hôn/);
+const welcomeDialog = text.match(/<dialog[^>]*class="media-entrance"[^>]*>[\s\S]*?<\/dialog>/)?.[0];
+assert.ok(welcomeDialog);
+assert.doesNotMatch(welcomeDialog, /role="switch"|Nền hoàng hôn|sunset-train/);
 assert.match(text, /welcome-dive-still\.png/);
 for (const [path, size, type, signature] of [
   ['/media/welcome-dive.gif', 9596493, 'image/gif', '474946'],
