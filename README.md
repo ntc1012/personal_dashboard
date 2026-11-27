@@ -258,3 +258,13 @@ Nút switch **Nền hoàng hôn** chỉ xuất hiện tại thanh nhạc sau khi
 Chuyển sang Hoàng hôn bắt buộc đổi bảng màu: chữ kem, chữ phụ màu đào, nút cam và bảng/sidebar nâu ấm, kể cả khi tài khoản đang chọn giao diện sáng. Đăng nhập, hero, thanh nhạc và bảng chỉnh chuyển động đều dùng cùng bảng màu; màn chào đầu tiên giữ bảng màu xanh riêng. Khi quay về Đêm, các lựa chọn sáng/tối/tự động của tài khoản có hiệu lực lại.
 
 Ảnh hoàng hôn là nền tĩnh nên nút nền động được vô hiệu hóa; video đêm được dừng và bỏ nguồn khi không dùng. MP3 và trạng thái đĩa xoay giữ nguyên khi chuyển nền. Ảnh chỉ tải khi được chọn; có nền màu dự phòng nếu tải lỗi.
+
+## Menu chính theo bố cục game
+
+Sau đăng nhập, đường dẫn gốc mở menu toàn màn hình: ba nhóm Hằng ngày / Dự án / Không gian, tiêu đề lớn, mảng chéo và bảng xem nhanh theo mục đang chọn. Tất cả 13 module vẫn truy cập được. Dữ liệu xem nhanh lấy từ snapshot của tài khoản, không tạo dữ liệu mẫu ở chế độ cloud; Vault chỉ hiện metadata tên mục.
+
+Chuột: rê để xem nhanh, bấm để mở. Bàn phím: ↑/↓ chọn mục, ←/→ đổi nhóm, Enter mở, Esc từ module quay về menu. Nút Menu và logo ở thanh điều hướng có cùng tác dụng. Khi đã mở một module, menu có nút Tiếp tục để quay lại module đó. Esc không chuyển trang khi đang nhập liệu hoặc đang mở hộp thoại.
+
+Khi vào module, thanh điều hướng thu gọn thành biểu tượng trên desktop; điện thoại dùng nút Menu. Bộ lọc, biểu mẫu, chat, dữ liệu và các Server Actions hiện có được giữ lại. Browser Back/Forward phân biệt trạng thái menu và module trong history. Chuyển ra menu và mở module dùng thời lượng đã chọn trong bảng Chỉnh chuyển động; chế độ giảm chuyển động bỏ hiệu ứng.
+
+Hai nền Đêm/Hoàng hôn vẫn có bảng màu tương ứng. Khung game chỉ áp dụng bên trong; màn chào và đăng nhập giữ luồng trước đó. Kiểm tra HTTP gồm menu và các route module; chưa kiểm thử tương tác bàn phím/chuột và hình ảnh thực tế vì công cụ trình duyệt chưa kết nối.

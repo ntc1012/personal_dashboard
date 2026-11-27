@@ -10,6 +10,7 @@ import {
   LockKeyhole,
   Archive,
   ArrowUpRight,
+  ArrowLeft,
   Bot,
   Check,
   CheckCheck,
@@ -62,6 +63,7 @@ import DeadlineSummary from './deadline-summary';
 import LiveUpdates from './live-updates';
 import ConnectedDashboard from './connected-dashboard';
 import { useDashboardMotion } from './dashboard-motion';
+import PersonaMenu from './persona-menu';
 
 const navigation = [
   { id: 'home', label: 'Tổng quan', icon: LayoutDashboard },
@@ -157,6 +159,9 @@ export default function Dashboard({
   const refreshSequence = useRef(0);
   const demoRef = useRef<DemoState>({ snapshot: initial, events: [] });
   const [section, setSection] = useState<Section>(initialSection);
+  const [menuOpen, setMenuOpen] = useState(initialSection === 'home');
+  const [canResume, setCanResume] = useState(initialSection !== 'home');
+  const previousMenu = useRef(initialSection === 'home');
   const [query, setQuery] = useState('');
   const [taskFilter, setTaskFilter] = useState('open');
   const [taskProject, setTaskProject] = useState('all');
@@ -225,12 +230,34 @@ export default function Dashboard({
   useEffect(() => {
     function popped() {
       const part = window.location.pathname.split('/').filter(Boolean);
-      const next = (part[0] === 'demo' ? part[1] : part[0]) || 'home';
-      if (navigation.some((n) => n.id === next)) setSection(next as Section);
+      const pathSection = part[0] === 'demo' ? part[1] : part[0];
+      const view = window.history.state?.jarvisView;
+      const next =
+        pathSection || (view === 'menu' ? window.history.state?.section : undefined) || 'home';
+      if (navigation.some((n) => n.id === next)) {
+        setSection(next as Section);
+        setMenuOpen(view === 'menu' || (!pathSection && view !== 'module'));
+      }
     }
     window.addEventListener('popstate', popped);
     return () => window.removeEventListener('popstate', popped);
   }, []);
+  useEffect(() => {
+    if (menuOpen) return;
+    function back(e: KeyboardEvent) {
+      if (
+        e.key !== 'Escape' ||
+        e.defaultPrevented ||
+        document.querySelector('dialog[open]') ||
+        (e.target as HTMLElement).closest('input,textarea,select,[contenteditable]')
+      )
+        return;
+      e.preventDefault();
+      openHub();
+    }
+    window.addEventListener('keydown', back);
+    return () => window.removeEventListener('keydown', back);
+  }, [menuOpen, section, mode]);
   const data = visible(snapshot);
   const today = dateKey(now || new Date(initial.projects[0]?.created_at || '2026-11-27T00:00:00Z'));
   const hour = now ? now.getHours() : 12;
@@ -284,30 +311,49 @@ export default function Dashboard({
       data.projects.find((p) => p.id === c.project_id)?.name,
     ),
   );
+  function modulePath(next: Section) {
+    return mode === 'demo'
+      ? next === 'home'
+        ? '/demo'
+        : '/demo/' + next
+      : next === 'home'
+        ? '/'
+        : '/' + next;
+  }
+  function openHub() {
+    if (menuOpen) return;
+    window.history.pushState({ jarvisView: 'menu', section }, '', mode === 'demo' ? '/demo' : '/');
+    setMobileOpen(false);
+    setMenuOpen(true);
+    window.scrollTo(0, 0);
+  }
+  function resumeModule() {
+    window.history.pushState({ jarvisView: 'module' }, '', modulePath(section));
+    setMenuOpen(false);
+  }
   function go(next: Section, origin?: { x: number; y: number }) {
     navigationOrigin.current = origin;
-    const path =
-      mode === 'demo'
-        ? next === 'home'
-          ? '/demo'
-          : '/demo/' + next
-        : next === 'home'
-          ? '/'
-          : '/' + next;
-    window.history.pushState({}, '', path);
+    window.history.pushState({ jarvisView: 'module' }, '', modulePath(next));
+    setMenuOpen(false);
+    setCanResume(true);
     setSection(next);
     setQuery('');
     setMobileOpen(false);
+    window.scrollTo(0, 0);
   }
   useLayoutEffect(() => {
-    if (previousSection.current === section) return;
+    const wasMenu = previousMenu.current;
+    previousMenu.current = menuOpen;
+    if (menuOpen) return;
+    if (previousSection.current === section && !wasMenu) return;
     previousSection.current = section;
+    contentMotionRef.current?.focus({ preventScroll: true });
     return animateMotion(
       contentMotionRef.current,
-      section === 'home' ? 'exit' : 'enter',
+      !wasMenu && section === 'home' ? 'exit' : 'enter',
       navigationOrigin.current,
     );
-  }, [section, animateMotion]);
+  }, [section, menuOpen, animateMotion]);
   const previousFilter = useRef(taskFilter);
   useLayoutEffect(() => {
     if (previousFilter.current === taskFilter) return;
@@ -593,8 +639,30 @@ export default function Dashboard({
     );
   }
   return (
-    <div className={`app-shell ${light ? 'light' : 'dark'}`} data-period={period}>
-      <a href="#main-content" className="skip-link sr-only focus:not-sr-only">
+    <div
+      className={`app-shell persona-shell ${menuOpen ? 'is-hub' : 'is-module'} ${light ? 'light' : 'dark'}`}
+      data-period={period}
+    >
+      {menuOpen && (
+        <PersonaMenu
+          snapshot={snapshot}
+          entries={navigation.map((n) => ({
+            id: n.id,
+            label: n.label,
+            description: sectionDescriptions[n.id],
+          }))}
+          selectedSection={section}
+          mode={mode}
+          onOpen={go}
+          onCommands={() => setCommands(true)}
+          canResume={canResume}
+          onResume={resumeModule}
+        />
+      )}
+      <a
+        href={menuOpen ? '#hub-preview' : '#main-content'}
+        className="skip-link sr-only focus:not-sr-only"
+      >
         Bỏ qua menu, tới nội dung
       </a>
       {mobileOpen && (
@@ -605,7 +673,7 @@ export default function Dashboard({
         />
       )}
       <aside className={`sidebar ${mobileOpen ? 'open' : ''}`}>
-        <button className="brand" onClick={() => go('home')} aria-label="J.A.R.V.I.S. Tổng quan">
+        <button className="brand" onClick={openHub} aria-label="Về menu chính J.A.R.V.I.S.">
           <span className="brand-mark">
             J<span>/</span>
           </span>
@@ -633,6 +701,7 @@ export default function Dashboard({
           {navigation.map((n) => (
             <button
               key={n.id}
+              title={n.label}
               className={section === n.id ? 'nav-item selected' : 'nav-item'}
               onClick={(event) => {
                 const bounds = event.currentTarget.getBoundingClientRect();
@@ -681,15 +750,13 @@ export default function Dashboard({
           </div>
         </div>
       </aside>
-      <div className="main-shell">
+      <div className="main-shell" hidden={menuOpen}>
         <header className="topbar">
           <div className="breadcrumb">
-            <button
-              className="icon-button mobile-menu"
-              aria-label="Mở menu"
-              onClick={() => setMobileOpen(true)}
-            >
-              <Menu size={21} />
+            <button className="persona-return" aria-label="Về menu chính (Esc)" onClick={openHub}>
+              <ArrowLeft size={18} />
+              <span>Menu</span>
+              <kbd>Esc</kbd>
             </button>
             <span>Không gian cá nhân</span>
             <ChevronRight size={14} />
@@ -720,7 +787,7 @@ export default function Dashboard({
             </span>
           </div>
         </header>
-        <main className="content" id="main-content" ref={contentMotionRef}>
+        <main className="content" id="main-content" ref={contentMotionRef} tabIndex={-1}>
           {mode === 'demo' && (
             <div className="demo-banner">
               <span>

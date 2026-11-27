@@ -15,6 +15,10 @@ const text = await demo.text();
 assert.match(text, /BẢN DÙNG THỬ/);
 assert.match(text, /Không gian của bạn/);
 assert.match(text, /J.A.R.V.I.S./);
+assert.match(text, /Menu chính J.A.R.V.I.S./);
+assert.match(text, /hub-navigation/);
+assert.match(text, /hub-preview/);
+assert.match(text, /Hằng ngày/);
 assert.doesNotMatch(text, /service_role|sb_secret_/);
 const manifest = await (await fetch(base + '/manifest.webmanifest')).json();
 assert.equal(manifest.display, 'standalone');
@@ -50,6 +54,8 @@ for (const section of sections) {
   const html = await res.text();
   assert.ok(!html.includes('Internal Server Error'), section);
   assert.match(html, /BẢN DÙNG THỬ/);
+  assert.match(html, /persona-shell is-module/);
+  assert.match(html, /Về menu chính \(Esc\)/);
 }
 assert.equal((await fetch(base + '/api/cron/monitor')).status, 401);
 assert.equal((await fetch(base + '/api/cron/integrations')).status, 401);

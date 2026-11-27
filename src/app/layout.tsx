@@ -15,6 +15,7 @@ import './background-media.css';
 import DashboardMotion from '@/components/dashboard-motion';
 import './dashboard-motion.css';
 import './background-palettes.css';
+import './persona-menu.css';
 export const maxDuration = 60;
 export const metadata: Metadata = {
   title: 'J.A.R.V.I.S. — Personal dashboard',
