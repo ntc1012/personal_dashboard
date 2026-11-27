@@ -18,6 +18,7 @@ body {
 .background-media[data-period='afternoon'] {
   background: radial-gradient(ellipse at 75% 20%, #6a5e89, #1d3657 60%, #102442);
 }
+.background-night-still,
 .background-video {
   position: absolute;
   width: 100%;
@@ -29,6 +30,9 @@ body {
   transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .background-video.ready {
+  opacity: 1;
+}
+.background-night-still {
   opacity: 1;
 }
 .background-shade {

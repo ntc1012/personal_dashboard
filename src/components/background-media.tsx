@@ -31,6 +31,7 @@ export default function BackgroundMedia() {
   const motion = useDashboardMotion();
   const [welcomeFailed, setWelcomeFailed] = useState(false);
   const [sunsetReady, setSunsetReady] = useState(false);
+  const [nightStillReady, setNightStillReady] = useState(false);
   const video = useRef<HTMLVideoElement>(null),
     welcomeVideo = useRef<HTMLVideoElement>(null),
     audio = useRef<HTMLAudioElement>(null),
@@ -176,13 +177,13 @@ export default function BackgroundMedia() {
   useEffect(() => {
     document.body.dataset.background = activeBackground;
     document.body.dataset.mediaReady = String(
-      prefs.background === 'sunset' ? sunsetReady : videoReady,
+      prefs.background === 'sunset' ? sunsetReady : videoReady || nightStillReady,
     );
     return () => {
       delete document.body.dataset.mediaReady;
       delete document.body.dataset.background;
     };
-  }, [videoReady, sunsetReady, activeBackground]);
+  }, [videoReady, nightStillReady, sunsetReady, activeBackground]);
   useEffect(() => {
     if (entered || welcomeFailed) return;
     const node = welcomeVideo.current;
@@ -247,6 +248,17 @@ export default function BackgroundMedia() {
         data-background={activeBackground}
         aria-hidden="true"
       >
+        {entered && prefs.background === 'night' && (
+          <img
+            className="background-night-still"
+            src={backgroundMedia.nightStill}
+            alt=""
+            width="1920"
+            height="1080"
+            onLoad={() => setNightStillReady(true)}
+            onError={() => setNightStillReady(false)}
+          />
+        )}
         {entered && prefs.background === 'sunset' && (
           <img
             className={sunsetReady ? 'background-sunset ready' : 'background-sunset'}

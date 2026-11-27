@@ -4,6 +4,7 @@
   --hub-paper: #effaff;
   --hub-paper-ink: #082333;
   --hub-mark: #ff527d;
+  background: transparent;
 }
 .persona-shell.is-hub > .sidebar {
   display: none;
@@ -13,8 +14,8 @@
 }
 body:has(.persona-shell.is-hub) .background-shade {
   background:
-    linear-gradient(110deg, #031831eb 0%, #062f5ebf 48%, #08346c73 100%),
-    linear-gradient(0deg, #03162ee6, transparent 75%);
+    linear-gradient(110deg, #031831b3 0%, #062f5e52 48%, #08346c33 100%),
+    linear-gradient(0deg, #03162e99, transparent 65%);
 }
 .persona-hub {
   min-height: 100dvh;
@@ -124,6 +125,7 @@ body:has(.persona-shell.is-hub) .background-shade {
   padding: 0.3rem 1rem;
   position: relative;
   isolation: isolate;
+  text-shadow: 0 2px 12px #03162ecc;
   min-height: 3.6rem;
   transition:
     transform var(--t-hover) var(--motion-ease),
@@ -161,6 +163,7 @@ body:has(.persona-shell.is-hub) .background-shade {
   opacity: 0;
 }
 .hub-menu-item.selected {
+  text-shadow: none;
   color: var(--hub-paper-ink);
   transform: translateX(0.8rem);
 }
@@ -371,8 +374,8 @@ body[data-background='sunset'] .persona-shell.is-hub {
 }
 body[data-background='sunset']:has(.persona-shell.is-hub) .background-shade {
   background:
-    linear-gradient(110deg, #2c1420ed, #55242bbb 48%, #6a2f226b),
-    linear-gradient(0deg, #2e1421ed, transparent 75%);
+    linear-gradient(110deg, #2c1420b3, #55242b52 48%, #6a2f2233),
+    linear-gradient(0deg, #2e142199, transparent 65%);
 }
 body[data-background='sunset'] .hub-diagonal {
   background: linear-gradient(140deg, #ffbf7d20, #431a2855);

@@ -4,6 +4,7 @@ export const backgroundMedia = {
   disc: '/media/color-your-night-disc.jpg',
   sunset: '/media/sunset-train-eccc4e895c21.png',
   video: '/media/color-your-night-55e3ce1e6324.mp4',
+  nightStill: '/media/makoto-night-still.jpg',
   audio: '/media/color-your-night-3461b3e453d8.mp3',
   title: 'Color Your Night',
 } as const;
