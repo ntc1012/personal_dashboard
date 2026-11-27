@@ -1,0 +1,26 @@
+name: Website monitor scheduler
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '2,17,32,47 * * * *'
+permissions:
+  contents: read
+concurrency:
+  group: jarvis-monitor
+  cancel-in-progress: false
+jobs:
+  monitor:
+    if: ${{ vars.JARVIS_MONITOR_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Trigger authenticated monitor job
+        env:
+          APP_URL: ${{ vars.JARVIS_APP_URL }}
+          CRON_SECRET: ${{ secrets.JARVIS_CRON_SECRET }}
+        shell: bash
+        run: |
+          test -n "$APP_URL"
+          [[ "$APP_URL" == https://* ]]
+          test -n "$CRON_SECRET"
+          curl --fail --silent --show-error --max-time 70 -H "Authorization: Bearer $CRON_SECRET" "$APP_URL/api/cron/monitor"

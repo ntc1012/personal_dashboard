@@ -1,0 +1,28 @@
+name: Connected dashboard scheduler
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+permissions:
+  contents: read
+concurrency:
+  group: jarvis-integrations
+  cancel-in-progress: false
+jobs:
+  sync:
+    if: ${{ vars.JARVIS_INTEGRATIONS_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Reconcile integrations and refresh feeds
+        env:
+          APP_URL: ${{ vars.JARVIS_APP_URL }}
+          CRON_SECRET: ${{ secrets.JARVIS_CRON_SECRET }}
+        shell: bash
+        run: |
+          test -n "$APP_URL"
+          [[ "$APP_URL" == https://* ]]
+          test -n "$CRON_SECRET"
+          for job in integrations news; do
+            curl --fail --silent --show-error --max-time 70 -H "Authorization: Bearer $CRON_SECRET" "$APP_URL/api/cron/$job"
+          done

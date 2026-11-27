@@ -1,0 +1,47 @@
+{
+  "name": "jarvis-personal-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build",
+    "start": "next start --hostname 127.0.0.1",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --conditions=react-server --test tests/*.test.ts",
+    "dev:demo": "node --import ./scripts/demo-env.mjs node_modules/next/dist/bin/next dev --hostname 127.0.0.1",
+    "test:http": "node scripts/http-smoke.mjs",
+    "data:cedict": "node scripts/import-cedict.mjs",
+    "doctor": "node --env-file-if-exists=.env.local scripts/doctor.mjs",
+    "format": "prettier --write src tests scripts next.config.ts README.md",
+    "db:bundle": "node scripts/bundle-migrations.mjs"
+  },
+  "dependencies": {
+    "@fontsource/barlow-condensed": "^5.3.0",
+    "@fontsource/be-vietnam-pro": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.119.2",
+    "@tailwindcss/postcss": "^4.3.5",
+    "fast-xml-parser": "^5.12.1",
+    "ipaddr.js": "^2.5.0",
+    "lucide-react": "^1.81.0",
+    "motion": "^14.14.0",
+    "next": "^16.4.6",
+    "papaparse": "^5.7.1",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "server-only": "^0.0.1",
+    "tailwindcss": "^4.3.5",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.6.0",
+    "@types/node": "^26.6.11",
+    "@types/papaparse": "^5.5.2",
+    "@types/react": "^19.3.3",
+    "@types/react-dom": "^19.3.0",
+    "prettier": "^3.10.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}

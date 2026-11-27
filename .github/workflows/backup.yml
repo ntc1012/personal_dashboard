@@ -1,0 +1,31 @@
+name: Private application backup
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 14 * * 0'
+permissions:
+  contents: read
+jobs:
+  backup:
+    if: ${{ github.event.repository.private && vars.JARVIS_BACKUP_ENABLED == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - name: Export schema and application data
+        env:
+          SUPABASE_DB_URL: ${{ secrets.JARVIS_SUPABASE_DB_URL }}
+        shell: bash
+        run: |
+          test -n "$SUPABASE_DB_URL"
+          mkdir -p backup
+          supabase db dump --db-url "$SUPABASE_DB_URL" --schema public,private --file backup/schema.sql
+          supabase db dump --db-url "$SUPABASE_DB_URL" --schema public,private --data-only --use-copy --file backup/data.sql
+          tar -czf jarvis-application-backup.tar.gz backup
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jarvis-application-backup
+          path: jarvis-application-backup.tar.gz
+          retention-days: 14
