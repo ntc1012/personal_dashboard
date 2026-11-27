@@ -108,7 +108,9 @@ assert.match(text, /Chỉnh chuyển động/);
 const welcomeDialog = text.match(/<dialog[^>]*class="media-entrance"[^>]*>[\s\S]*?<\/dialog>/)?.[0];
 assert.ok(welcomeDialog);
 assert.doesNotMatch(welcomeDialog, /role="switch"|Nền hoàng hôn|sunset-train/);
-assert.match(welcomeDialog, /welcome-dive\.gif/);
+// Server rendering starts with reduced motion until browser preferences are known.
+assert.match(welcomeDialog, /welcome-dive(?:-still\.png|\.gif)/);
+assert.doesNotMatch(welcomeDialog, /<video/);
 for (const [path, size, type, signature] of [
   ['/media/welcome-dive.gif', 9596493, 'image/gif', '474946'],
   ['/media/welcome-dive-still.png', 54932, 'image/png', '89504e47'],
