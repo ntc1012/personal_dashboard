@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { Film, Pause, Play, Volume2, VolumeX } from 'lucide-react';
+import { Film, Pause, Play, Volume2, VolumeX, SlidersHorizontal } from 'lucide-react';
 import {
   backgroundMedia,
   backgroundPeriod,
@@ -10,6 +10,7 @@ import {
 } from '@/lib/background-media';
 import { mediaMotion } from '@/lib/theme/motion';
 import { dateKey } from '@/lib/domain';
+import { useDashboardMotion } from './dashboard-motion';
 
 const greetings = {
   morning: 'CHÀO BUỔI SÁNG',
@@ -18,6 +19,8 @@ const greetings = {
   night: 'COLOR YOUR NIGHT',
 };
 export default function BackgroundMedia() {
+  const motion = useDashboardMotion();
+  const [welcomeFailed, setWelcomeFailed] = useState(false);
   const video = useRef<HTMLVideoElement>(null),
     audio = useRef<HTMLAudioElement>(null),
     gate = useRef<HTMLDialogElement>(null);
@@ -97,6 +100,10 @@ export default function BackgroundMedia() {
     window.dispatchEvent(new Event('jarvis:media-entered'));
     setEntered(true);
     gate.current?.close();
+    const content =
+      document.querySelector<HTMLElement>('.app-shell') ||
+      document.querySelector<HTMLElement>('.setup-card');
+    motion.animate(content, 'open');
   }
   function toggleMusic() {
     if (!audio.current?.paused) {
@@ -219,6 +226,7 @@ export default function BackgroundMedia() {
         loop
         preload="none"
         onPlaying={() => setPlaying(true)}
+        onWaiting={() => setPlaying(false)}
         onPause={() => setPlaying(false)}
         onError={() => {
           setPlaying(false);
@@ -234,6 +242,22 @@ export default function BackgroundMedia() {
           enter(false);
         }}
       >
+        {!entered && (
+          <div className="welcome-art" aria-hidden="true">
+            <img
+              src={
+                motion.reduced || !prefs.motion || welcomeFailed
+                  ? backgroundMedia.welcomeStill
+                  : backgroundMedia.welcome
+              }
+              alt=""
+              width="682"
+              height="384"
+              onError={() => setWelcomeFailed(true)}
+            />
+            <div className="welcome-art-shade" />
+          </div>
+        )}
         <div className="media-entrance-copy">
           <span>J.A.R.V.I.S. / PERSONAL SYSTEM</span>
           <h2 id="media-welcome">{greetings[period]}</h2>
@@ -252,6 +276,10 @@ export default function BackgroundMedia() {
                 Vào không nhạc
               </button>
             )}
+            <button type="button" className="button secondary" onClick={motion.openPanel}>
+              <SlidersHorizontal size={16} />
+              Chỉnh chuyển động
+            </button>
           </div>
           <small>
             {backgroundMedia.title} · âm lượng khởi đầu thấp
@@ -304,7 +332,33 @@ export default function BackgroundMedia() {
           >
             {prefs.motion ? <Pause size={17} /> : <Film size={17} />}
           </button>
-          <span className="media-track">{backgroundMedia.title}</span>
+          <div
+            className="media-now-playing"
+            aria-label={
+              playing
+                ? 'Đang phát ' + backgroundMedia.title
+                : 'Đã tạm dừng ' + backgroundMedia.title
+            }
+          >
+            <span
+              className="record-disc"
+              style={{ animationPlayState: playing ? 'running' : 'paused' }}
+              aria-hidden="true"
+            >
+              <img src={backgroundMedia.disc} alt="" width="48" height="48" />
+            </span>
+            <span className="media-track" title={backgroundMedia.title}>
+              {backgroundMedia.title}
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={motion.openPanel}
+            aria-label="Chỉnh chuyển động (T)"
+            title="Chỉnh chuyển động · T"
+          >
+            <SlidersHorizontal size={17} />
+          </button>
         </div>
       )}
       {message && (

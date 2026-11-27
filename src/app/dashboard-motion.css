@@ -1,0 +1,240 @@
+:root {
+  --t-hover: 120ms;
+  --t-tab: 170ms;
+  --t-enter: 450ms;
+  --t-open: 500ms;
+  --t-exit: 300ms;
+  --motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+.welcome-art {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.welcome-art > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.welcome-art-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, #06162aed 0%, #071a35b3 42%, #032e6840 100%),
+    linear-gradient(0deg, #06162ac4, transparent 60%);
+}
+.media-entrance-copy {
+  position: relative;
+  z-index: 1;
+}
+.media-entrance-copy > h2 {
+  animation: welcome-title-reveal var(--t-open) var(--motion-ease) both;
+}
+.media-entry-actions button {
+  transition:
+    transform var(--t-hover) var(--motion-ease),
+    background-color var(--t-hover);
+}
+.media-entry-actions button:hover {
+  transform: translateX(5px);
+}
+@keyframes welcome-title-reveal {
+  from {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  }
+  to {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+.media-now-playing {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+  order: -1;
+  padding-left: 0.3rem;
+}
+.record-disc {
+  display: block;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 50%;
+  overflow: hidden;
+  animation: record-spin 9s linear infinite;
+  mask-image: radial-gradient(circle, transparent 0 8%, #000 8.5%);
+}
+.record-disc img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: block;
+}
+@keyframes record-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.media-track {
+  display: block;
+  max-width: 9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.nav-item {
+  isolation: isolate;
+  transition:
+    transform var(--t-hover) var(--motion-ease),
+    color var(--t-hover);
+}
+.nav-item::after {
+  content: '';
+  position: absolute;
+  inset: 3px 0;
+  border-radius: 3px;
+  background: var(--accent);
+  opacity: 0;
+  z-index: -1;
+  transform: scaleX(0) skewX(-12deg);
+  transform-origin: left;
+  transition:
+    transform var(--t-hover) var(--motion-ease),
+    opacity var(--t-hover);
+}
+.nav-item:hover,
+.nav-item:focus-visible {
+  transform: translateX(4px);
+}
+.nav-item:hover::after,
+.nav-item:focus-visible::after {
+  opacity: 0.13;
+  transform: scaleX(1) skewX(-12deg);
+}
+.filter {
+  transition:
+    background-color var(--t-tab),
+    color var(--t-tab),
+    transform var(--t-hover) var(--motion-ease);
+}
+.filter:hover {
+  transform: translateY(-1px);
+}
+.modal:has(.motion-tuner) {
+  color: #e6f4ff;
+  background: #0b2038;
+  border: 1px solid #416984;
+  width: min(42rem, calc(100vw - 2rem));
+}
+.motion-tuner > p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  color: #b7cede;
+}
+.motion-tuner > label {
+  display: grid;
+  grid-template-columns: 8rem minmax(4rem, 1fr) 4.5rem;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 0.9rem 0;
+  font-size: 0.9rem;
+}
+.motion-tuner input {
+  width: 100%;
+  accent-color: #82e1ef;
+}
+.motion-tuner output {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: #82e1ef;
+}
+.motion-tuner .button {
+  color: #e5f3ff;
+  border-color: #4d718c;
+}
+.motion-preview {
+  overflow: hidden;
+  margin: 1.2rem 0;
+  border: 1px solid #3e617b;
+  background: #07182b;
+  min-height: 9rem;
+}
+.motion-preview > div {
+  padding: 1.2rem;
+  min-height: 9rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.45rem;
+  border-left: 4px solid #82e1ef;
+  background: linear-gradient(110deg, #143b5b, #0d2138);
+}
+.motion-preview span {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  color: #8bb2ce;
+}
+.motion-preview strong {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 2rem;
+}
+.motion-preview p {
+  font-size: 0.875rem;
+}
+@media (max-width: 600px) {
+  .media-controls {
+    gap: 0.2rem;
+    padding: 0.2rem 0.35rem;
+  }
+  .media-controls button {
+    width: 34px;
+    height: 36px;
+  }
+  .media-volume input {
+    width: 44px;
+  }
+  .record-disc {
+    width: 34px;
+    height: 34px;
+  }
+  .media-now-playing {
+    gap: 0.3rem;
+  }
+  .media-track {
+    display: block;
+    max-width: 4.5rem;
+    font-size: 0.8rem;
+  }
+  .media-control-divider {
+    display: none;
+  }
+  .motion-tuner > label {
+    grid-template-columns: 6rem minmax(3rem, 1fr) 3.8rem;
+    gap: 0.5rem;
+  }
+  .welcome-art > img {
+    object-position: 35% center;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .record-disc,
+  .media-entrance-copy > h2 {
+    animation: none;
+  }
+  .nav-item,
+  .nav-item::after,
+  .filter,
+  .media-entry-actions button {
+    transition:
+      color 120ms,
+      background-color 120ms;
+  }
+  .nav-item:hover,
+  .nav-item:focus-visible,
+  .filter:hover,
+  .media-entry-actions button:hover {
+    transform: none;
+  }
+}

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   Activity,
   BookOpen,
@@ -61,6 +61,7 @@ import MfaSettings from './mfa-settings';
 import DeadlineSummary from './deadline-summary';
 import LiveUpdates from './live-updates';
 import ConnectedDashboard from './connected-dashboard';
+import { useDashboardMotion } from './dashboard-motion';
 
 const navigation = [
   { id: 'home', label: 'Tổng quan', icon: LayoutDashboard },
@@ -149,6 +150,10 @@ export default function Dashboard({
   initialSection?: Section;
 }) {
   const [snapshot, setSnapshot] = useState(initial);
+  const { animate: animateMotion } = useDashboardMotion();
+  const contentMotionRef = useRef<HTMLElement>(null);
+  const navigationOrigin = useRef<{ x: number; y: number } | undefined>(undefined);
+  const previousSection = useRef(initialSection);
   const refreshSequence = useRef(0);
   const demoRef = useRef<DemoState>({ snapshot: initial, events: [] });
   const [section, setSection] = useState<Section>(initialSection);
@@ -279,7 +284,8 @@ export default function Dashboard({
       data.projects.find((p) => p.id === c.project_id)?.name,
     ),
   );
-  function go(next: Section) {
+  function go(next: Section, origin?: { x: number; y: number }) {
+    navigationOrigin.current = origin;
     const path =
       mode === 'demo'
         ? next === 'home'
@@ -293,6 +299,24 @@ export default function Dashboard({
     setQuery('');
     setMobileOpen(false);
   }
+  useLayoutEffect(() => {
+    if (previousSection.current === section) return;
+    previousSection.current = section;
+    return animateMotion(
+      contentMotionRef.current,
+      section === 'home' ? 'exit' : 'enter',
+      navigationOrigin.current,
+    );
+  }, [section, animateMotion]);
+  const previousFilter = useRef(taskFilter);
+  useLayoutEffect(() => {
+    if (previousFilter.current === taskFilter) return;
+    previousFilter.current = taskFilter;
+    return animateMotion(
+      contentMotionRef.current?.querySelector<HTMLElement>('.task-list') || null,
+      'tab',
+    );
+  }, [taskFilter, animateMotion]);
   function persist(next: DemoState) {
     demoRef.current = next;
     setSnapshot(next.snapshot);
@@ -610,7 +634,15 @@ export default function Dashboard({
             <button
               key={n.id}
               className={section === n.id ? 'nav-item selected' : 'nav-item'}
-              onClick={() => go(n.id)}
+              onClick={(event) => {
+                const bounds = event.currentTarget.getBoundingClientRect();
+                go(
+                  n.id,
+                  event.detail
+                    ? { x: event.clientX, y: event.clientY }
+                    : { x: bounds.right, y: bounds.top + bounds.height / 2 },
+                );
+              }}
               aria-current={section === n.id ? 'page' : undefined}
             >
               <n.icon size={19} />
@@ -688,7 +720,7 @@ export default function Dashboard({
             </span>
           </div>
         </header>
-        <main className="content" id="main-content">
+        <main className="content" id="main-content" ref={contentMotionRef}>
           {mode === 'demo' && (
             <div className="demo-banner">
               <span>

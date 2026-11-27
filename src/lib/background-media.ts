@@ -1,4 +1,7 @@
 export const backgroundMedia = {
+  welcome: '/media/welcome-dive.gif',
+  welcomeStill: '/media/welcome-dive-still.png',
+  disc: '/media/color-your-night-disc.jpg',
   video: '/media/color-your-night-55e3ce1e6324.mp4',
   audio: '/media/color-your-night-3461b3e453d8.mp3',
   title: 'Color Your Night',

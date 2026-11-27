@@ -12,6 +12,8 @@ import './modules.css';
 import PwaSupport from '@/components/pwa-support';
 import BackgroundMedia from '@/components/background-media';
 import './background-media.css';
+import DashboardMotion from '@/components/dashboard-motion';
+import './dashboard-motion.css';
 export const maxDuration = 60;
 export const metadata: Metadata = {
   title: 'J.A.R.V.I.S. — Personal dashboard',
@@ -25,8 +27,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="vi">
       <body>
-        <BackgroundMedia />
-        {children}
+        <DashboardMotion>
+          <BackgroundMedia />
+          {children}
+        </DashboardMotion>
         <PwaSupport />
       </body>
     </html>

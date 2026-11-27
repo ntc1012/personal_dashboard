@@ -242,3 +242,11 @@ Theo lựa chọn mới của người dùng, hai tệp Color Your Night đượ
 - `.gitignore` chặn các MP4/WebM/MP3 khác và chỉ cho phép đúng hai tệp người dùng chọn. Muốn thay nguồn phải thay file, cập nhật đường dẫn hash và ngoại lệ tương ứng.
 
 Đã kiểm tra build, kiểu TypeScript và HTTP của trang/tệp media. Chưa kiểm thử nghe/nhìn tương tác trên Chrome, Firefox hoặc Safari iOS trong môi trường hiện tại.
+
+## Màn chào và bảng chuyển động từ prototype
+
+GIF người dùng cung cấp được hiển thị ở màn chào đầu tiên, với lớp phủ để đọc chữ. Khi bật giảm chuyển động hoặc đã tắt nền động, dùng PNG trích nguyên khung hình đầu tiên thay GIF. Ảnh GIF được gỡ khỏi cây giao diện sau khi vào dashboard. Ảnh đĩa nằm sát tên bài hát, cắt tròn và xoay liên tục chỉ khi audio phát thực tế; tạm dừng/đệm/lỗi sẽ dừng xoay ở góc hiện tại. Chế độ giảm chuyển động cũng tắt xoay đĩa.
+
+Nút **Chỉnh chuyển động** có tại màn chào và thanh nhạc; phím **T** mở bảng khi không nhập liệu hoặc mở hộp thoại khác. Bảng chỉnh riêng trên trình duyệt, có xem thử 4 hiệu ứng, sao chép JSON và đặt lại. Thông số nằm tại `src/lib/theme/motion.ts`: hover 120 ms, tab 170 ms, vào module 450 ms, mở dashboard 500 ms, quay lại 300 ms. Slider dùng các khoảng từ prototype; dữ liệu lưu được kiểm tra và giới hạn trước khi dùng.
+
+Hiệu ứng áp dụng vào menu chính, chuyển module, quay về Tổng quan và bộ lọc task; các tab khác giữ hiệu ứng sẵn có. Giảm chuyển động loại bỏ iris, quét và xoay. Thay đổi thiết lập chuyển động không sửa dữ liệu dự án hoặc quyền chatbot. File HTML prototype chỉ dùng tham khảo tương tác, không nhúng script hay chatbot dữ liệu mẫu vào ứng dụng.
